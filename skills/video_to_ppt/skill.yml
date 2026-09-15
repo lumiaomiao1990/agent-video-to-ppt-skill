@@ -1,27 +1,31 @@
 name: video_to_ppt
-description: Agent Skill，将视频转为可编辑PPT。支持【本地视频上传】或【视频直链URL】两种来源；自动提取字幕、LLM提炼每页标题正文，并根据每页内容生成配图。
-version: 0.4.0
+description: Agent Skill，支持本地视频 / mp4直链 / B站/抖音/小红书网页链接，语音转文字，LLM生成PPT大纲，根据每页标题内容自动生成配图，输出pptx文件。⚠️仅限个人学习使用，注意版权！
+version: 0.5.0
 parameters:
   type: object
   properties:
     video_path:
       type: string
-      description: 本地视频文件路径（二选一，和video_url不能同时填），支持 mp4 / mov
+      description: 本地视频文件路径（二选一，和video_url不能同时填写），支持mp4/mov
       default: ""
     video_url:
       type: string
-      description: 视频直链URL（二选一，和video_path不能同时填），仅支持mp4可直接下载链接；不支持B站/抖音等加密网页
+      description: 视频链接，支持mp4直链、B站、抖音、小红书网页链接；部分平台视频需要填写cookie才能解析
+      default: ""
+    cookie_string:
+      type: string
+      description: 【可选】浏览器Cookie文本，用于解析需要登录观看的平台视频
       default: ""
     output_pptx_path:
       type: string
-      description: PPT输出路径，例如 ./output/result.pptx
+      description: PPT输出保存路径，例如 ./output/result.pptx
     slide_count:
       type: integer
-      description: 期望生成幻灯片页数
+      description: 生成PPT幻灯片页数
       default: 8
     llm_api_key:
       type: string
-      description: LLM API Key，用于提炼PPT大纲。不填则降级为简单文本分割
+      description: LLM接口密钥，不填则使用简易文本分割模式
       default: ""
     llm_base_url:
       type: string
@@ -33,24 +37,24 @@ parameters:
       default: "gpt-3.5-turbo"
     enable_images:
       type: boolean
-      description: 是否根据每页标题和内容生成配图
+      description: 是否开启每页自动生成配图
       default: true
     image_provider:
       type: string
-      description: 图片生成服务商，支持 openai / siliconflow / custom
-      default: openai
+      description: 图片生成服务商，可选 openai / siliconflow / custom
+      default: "openai"
     image_api_key:
       type: string
-      description: 图片生成API Key，可选；为空时使用 llm_api_key
+      description: 文生图API密钥，为空则复用llm_api_key
       default: ""
     image_base_url:
       type: string
-      description: 图片生成接口地址，可选
+      description: 文生图接口地址
       default: ""
     image_model:
       type: string
-      description: 图片生成模型名称
-      default: dall-e-3
+      description: 文生图模型名称
+      default: "dall-e-3"
   required:
     - output_pptx_path
 returns:
@@ -59,19 +63,19 @@ returns:
   properties:
     outline_markdown:
       type: string
-      description: PPT大纲
+      description: PPT大纲markdown文本
     ppt_file_path:
       type: string
-      description: 输出pptx文件路径
+      description: 生成的pptx文件路径
     raw_transcript:
       type: string
-      description: 视频原始字幕
+      description: 视频识别出的完整字幕文本
     slide_images:
       type: array
-      description: 每页配图本地路径
+      description: 每页配图本地路径列表
     source_type:
       type: string
       description: 视频来源 local / url
     success:
       type: boolean
-      description: 是否执行成功
+      description: 任务是否执行成功
