@@ -1,0 +1,7 @@
+openai-whisper
+python-pptx
+torch
+openai
+requests
+Pillow
+yt-dlp

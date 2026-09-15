@@ -1,0 +1,77 @@
+name: video_to_ppt
+description: Agent Skill，将视频转为可编辑PPT。支持【本地视频上传】或【视频直链URL】两种来源；自动提取字幕、LLM提炼每页标题正文，并根据每页内容生成配图。
+version: 0.4.0
+parameters:
+  type: object
+  properties:
+    video_path:
+      type: string
+      description: 本地视频文件路径（二选一，和video_url不能同时填），支持 mp4 / mov
+      default: ""
+    video_url:
+      type: string
+      description: 视频直链URL（二选一，和video_path不能同时填），仅支持mp4可直接下载链接；不支持B站/抖音等加密网页
+      default: ""
+    output_pptx_path:
+      type: string
+      description: PPT输出路径，例如 ./output/result.pptx
+    slide_count:
+      type: integer
+      description: 期望生成幻灯片页数
+      default: 8
+    llm_api_key:
+      type: string
+      description: LLM API Key，用于提炼PPT大纲。不填则降级为简单文本分割
+      default: ""
+    llm_base_url:
+      type: string
+      description: LLM接口地址
+      default: "https://api.openai.com/v1"
+    llm_model:
+      type: string
+      description: LLM模型名称
+      default: "gpt-3.5-turbo"
+    enable_images:
+      type: boolean
+      description: 是否根据每页标题和内容生成配图
+      default: true
+    image_provider:
+      type: string
+      description: 图片生成服务商，支持 openai / siliconflow / custom
+      default: openai
+    image_api_key:
+      type: string
+      description: 图片生成API Key，可选；为空时使用 llm_api_key
+      default: ""
+    image_base_url:
+      type: string
+      description: 图片生成接口地址，可选
+      default: ""
+    image_model:
+      type: string
+      description: 图片生成模型名称
+      default: dall-e-3
+  required:
+    - output_pptx_path
+returns:
+  type: object
+  description: 返回PPT大纲、生成文件路径、配图信息
+  properties:
+    outline_markdown:
+      type: string
+      description: PPT大纲
+    ppt_file_path:
+      type: string
+      description: 输出pptx文件路径
+    raw_transcript:
+      type: string
+      description: 视频原始字幕
+    slide_images:
+      type: array
+      description: 每页配图本地路径
+    source_type:
+      type: string
+      description: 视频来源 local / url
+    success:
+      type: boolean
+      description: 是否执行成功
