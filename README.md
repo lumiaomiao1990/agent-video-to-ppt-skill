@@ -1,2 +1,21 @@
 # agent-video-to-ppt-skill
-An Agent Skill: Convert local video / mp4 url to pptx, auto generate slide images by LLM.
+Agent Skill：视频自动转PPT工具
+
+## ✨ 功能介绍
+将视频一键转为PPT课件，支持：
+- 本地视频文件（mp4/mov）
+- MP4直链网络视频URL
+- B站、抖音、小红书网页视频链接
+
+核心能力：
+1. Whisper语音识别，提取视频字幕文本
+2. LLM自动提炼PPT大纲，生成每页标题+要点
+3. 根据每页内容自动生成课件配图
+4. 输出标准`.pptx`文件，可以继续编辑
+
+> ⚠️ 重要声明：
+> 本工具仅供个人学习研究使用。下载平台视频请遵守各平台用户协议，**严禁商用、二次分发，注意版权风险**。
+> 部分会员/需要登录观看的视频，需要填入浏览器Cookie才能解析；平台存在反爬机制，链接解析有可能会失效。
+> 单视频上限 500MB，下载超时限制5分钟
+
+## 📁 项目目录
