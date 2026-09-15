@@ -1,5 +1,5 @@
 name: video_to_ppt
-description: Agent Skill，支持本地视频 / mp4直链 / B站/抖音/小红书网页链接，语音转文字，LLM生成PPT大纲，根据每页标题内容自动生成配图，输出pptx文件。⚠️仅限个人学习使用，注意版权！
+description: Agent Skill，支持本地视频 / mp4直链 / B站/抖音/小红书网页链接，语音转文字，LLM生成PPT大纲，根据每页标题内容自动生成配图，输出pptx文件
 version: 0.5.0
 parameters:
   type: object
@@ -14,18 +14,18 @@ parameters:
       default: ""
     cookie_string:
       type: string
-      description: 【可选】浏览器Cookie文本，用于解析需要登录观看的平台视频
+      description: 可选，浏览器Cookie文本，用于需要登录才可播放的视频
       default: ""
     output_pptx_path:
       type: string
-      description: PPT输出保存路径，例如 ./output/result.pptx
+      description: 输出PPT文件保存路径
     slide_count:
       type: integer
-      description: 生成PPT幻灯片页数
+      description: 生成PPT幻灯片总页数
       default: 8
     llm_api_key:
       type: string
-      description: LLM接口密钥，不填则使用简易文本分割模式
+      description: 大模型API Key，用于生成PPT大纲
       default: ""
     llm_base_url:
       type: string
@@ -33,49 +33,49 @@ parameters:
       default: "https://api.openai.com/v1"
     llm_model:
       type: string
-      description: LLM模型名称
+      description: 用于生成PPT大纲的模型名称
       default: "gpt-3.5-turbo"
     enable_images:
       type: boolean
-      description: 是否开启每页自动生成配图
+      description: 是否开启自动生成每页配图
       default: true
     image_provider:
       type: string
-      description: 图片生成服务商，可选 openai / siliconflow / custom
+      description: 图片生成服务商
       default: "openai"
     image_api_key:
       type: string
-      description: 文生图API密钥，为空则复用llm_api_key
+      description: 图片生成API Key，不填则复用llm_api_key
       default: ""
     image_base_url:
       type: string
-      description: 文生图接口地址
+      description: 图片生成接口地址
       default: ""
     image_model:
       type: string
-      description: 文生图模型名称
+      description: 配图生成模型
       default: "dall-e-3"
   required:
     - output_pptx_path
 returns:
   type: object
-  description: 返回PPT大纲、生成文件路径、配图信息
+  description: 返回结果
   properties:
     outline_markdown:
       type: string
       description: PPT大纲markdown文本
     ppt_file_path:
       type: string
-      description: 生成的pptx文件路径
+      description: 生成的PPT文件路径
     raw_transcript:
       type: string
-      description: 视频识别出的完整字幕文本
+      description: 视频语音识别完整原文
     slide_images:
       type: array
-      description: 每页配图本地路径列表
+      description: 每页配图文件路径列表
     source_type:
       type: string
       description: 视频来源 local / url
     success:
       type: boolean
-      description: 任务是否执行成功
+      description: 是否执行成功
